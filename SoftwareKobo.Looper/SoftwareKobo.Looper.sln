@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareKobo.Looper", "Soft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareKobo.Looper.WPFDemo", "SoftwareKobo.Looper.WPFDemo\SoftwareKobo.Looper.WPFDemo.csproj", "{858F00CC-ABB6-4ACB-B093-453CF20EDD79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareKobo.Looper.JavascriptSerializerDemo", "SoftwareKobo.Looper.JavascriptSerializerDemo\SoftwareKobo.Looper.JavascriptSerializerDemo.csproj", "{2D8DFCBB-F441-4670-AF28-D70E35147169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{858F00CC-ABB6-4ACB-B093-453CF20EDD79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{858F00CC-ABB6-4ACB-B093-453CF20EDD79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{858F00CC-ABB6-4ACB-B093-453CF20EDD79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D8DFCBB-F441-4670-AF28-D70E35147169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D8DFCBB-F441-4670-AF28-D70E35147169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D8DFCBB-F441-4670-AF28-D70E35147169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D8DFCBB-F441-4670-AF28-D70E35147169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

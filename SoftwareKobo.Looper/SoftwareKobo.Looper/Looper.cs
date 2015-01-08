@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoftwareKobo
 {
@@ -28,14 +29,19 @@ namespace SoftwareKobo
             _hasChildren = hasChildren;
         }
 
-        public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren)
+        public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren, Action betweenChildren)
         {
             var loopStateManager = new LoopStateManager();
 
-            InnerLoop(_loopObject, loopStateManager, _getChildren, _hasChildren, beforeLoopChildren, afterLoopChildren);
+            InnerLoop(_loopObject, loopStateManager, _getChildren, _hasChildren, beforeLoopChildren, afterLoopChildren, betweenChildren);
         }
 
-        private void InnerLoop(object loopObject, LoopStateManager loopStateManager, Func<object, IEnumerable<object>> getChildren, Func<object, bool> hasChildren, Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren)
+        public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren)
+        {
+            Loop(beforeLoopChildren, afterLoopChildren, null);
+        }
+
+        private void InnerLoop(object loopObject, LoopStateManager loopStateManager, Func<object, IEnumerable<object>> getChildren, Func<object, bool> hasChildren, Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren, Action betweenChildren)
         {
             if (loopStateManager.LoopState == LoopState.Return)
             {
@@ -44,8 +50,11 @@ namespace SoftwareKobo
 
             if (hasChildren(loopObject))
             {
-                foreach (var child in getChildren(loopObject))
+                var children = getChildren(loopObject).ToList();
+                for (int i = 0, count = children.Count; i < count; i++)
                 {
+                    var child = children[i];
+
                     if (beforeLoopChildren != null)
                     {
                         beforeLoopChildren(loopStateManager, child);
@@ -59,6 +68,10 @@ namespace SoftwareKobo
                     else if (loopStateManager.LoopState == LoopState.Continue)
                     {
                         loopStateManager.Reset();
+                        if (betweenChildren != null && i != count - 1)
+                        {
+                            betweenChildren();
+                        }
                         continue;
                     }
                     else if (loopStateManager.LoopState == LoopState.Return)
@@ -67,7 +80,7 @@ namespace SoftwareKobo
                     }
 
                     loopStateManager.Deep++;
-                    InnerLoop(child, loopStateManager, getChildren, hasChildren, beforeLoopChildren, afterLoopChildren);
+                    InnerLoop(child, loopStateManager, getChildren, hasChildren, beforeLoopChildren, afterLoopChildren, betweenChildren);
                     loopStateManager.Deep--;
 
                     if (loopStateManager.LoopState == LoopState.Return)
@@ -87,12 +100,20 @@ namespace SoftwareKobo
                     }
                     else if (loopStateManager.LoopState == LoopState.Continue)
                     {
-                        loopStateManager.Reset();
+                        if (betweenChildren != null && i != count - 1)
+                        {
+                            betweenChildren();
+                        }
                         continue;
                     }
                     else if (loopStateManager.LoopState == LoopState.Return)
                     {
                         return;
+                    }
+
+                    if (betweenChildren != null && i != count - 1)
+                    {
+                        betweenChildren();
                     }
                 }
             }
