@@ -68,11 +68,7 @@ namespace SoftwareKobo
                     else if (loopStateManager.LoopState == LoopState.Continue)
                     {
                         loopStateManager.Reset();
-                        if (betweenChildren != null && i != count - 1)
-                        {
-                            betweenChildren();
-                        }
-                        continue;
+                        goto BetweenChildren;
                     }
                     else if (loopStateManager.LoopState == LoopState.Return)
                     {
@@ -100,17 +96,15 @@ namespace SoftwareKobo
                     }
                     else if (loopStateManager.LoopState == LoopState.Continue)
                     {
-                        if (betweenChildren != null && i != count - 1)
-                        {
-                            betweenChildren();
-                        }
-                        continue;
+                        loopStateManager.Reset();
+                        goto BetweenChildren;
                     }
                     else if (loopStateManager.LoopState == LoopState.Return)
                     {
                         return;
                     }
 
+                    BetweenChildren:
                     if (betweenChildren != null && i != count - 1)
                     {
                         betweenChildren();
