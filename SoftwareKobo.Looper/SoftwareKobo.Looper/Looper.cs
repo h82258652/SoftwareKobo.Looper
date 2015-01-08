@@ -29,16 +29,16 @@ namespace SoftwareKobo
             _hasChildren = hasChildren;
         }
 
+        public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren)
+        {
+            Loop(beforeLoopChildren, afterLoopChildren, null);
+        }
+
         public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren, Action betweenChildren)
         {
             var loopStateManager = new LoopStateManager();
 
             InnerLoop(_loopObject, loopStateManager, _getChildren, _hasChildren, beforeLoopChildren, afterLoopChildren, betweenChildren);
-        }
-
-        public void Loop(Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren)
-        {
-            Loop(beforeLoopChildren, afterLoopChildren, null);
         }
 
         private void InnerLoop(object loopObject, LoopStateManager loopStateManager, Func<object, IEnumerable<object>> getChildren, Func<object, bool> hasChildren, Action<LoopStateManager, object> beforeLoopChildren, Action<LoopStateManager, object> afterLoopChildren, Action betweenChildren)
